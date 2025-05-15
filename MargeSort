@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int mx = 2e5 + 123;
+int a[mx];
+
+void marge(int l, int mid, int r) {
+    int p = l;
+    int q = mid + 1;
+    int len = r - l + 1;
+    vector<int> v(len);
+    int k = 0;
+
+    // Merge two sorted halves
+    while (p <= mid && q <= r) {
+        if (a[p] <= a[q]) {
+            v[k++] = a[p++];
+        } else {
+            v[k++] = a[q++];
+        }
+    }
+    while (p <= mid) {
+        v[k++] = a[p++];
+    }
+    while (q <= r) {
+        v[k++] = a[q++];
+    }
+
+    // Copy back to original array
+    for (int i = l; i <= r; i++) {
+        a[i] = v[i - l];
+    }
+
+    // Print the result of the current merge
+    cout << "Merged [l=" << l << ", r=" << r << "]: ";
+    for (int i = l; i <= r; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+}
+
+void margesort(int l, int r) {
+    if (l >= r) return;
+
+    int mid = (l + r) / 2;
+
+    cout << "Dividing [l=" << l << ", r=" << r << "], mid = " << mid << endl;
+
+    margesort(l, mid);
+    margesort(mid + 1, r);
+    marge(l, mid, r);
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    cout << "Initial Array: ";
+    for (int i = 0; i < n; i++) cout << a[i] << " ";
+    cout << "\n\n";
+
+    margesort(0, n - 1);
+
+    cout << "\nSorted Array: ";
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl;
+}
