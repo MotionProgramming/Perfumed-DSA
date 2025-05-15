@@ -1,0 +1,196 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+Node* head = NULL;
+
+// Insert at the beginning
+void insert_first(int x) {
+    Node* temp = new Node();
+    temp->data = x;
+    temp->next = head;
+    head = temp;
+}
+
+// Insert at the end
+void insert_last(Node*& head, int x) {
+    Node* newnode = new Node();
+    newnode->data = x;
+    newnode->next = NULL;
+
+    if (head == NULL) {
+        head = newnode;
+        return;
+    }
+
+    Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newnode;
+}
+
+// Display the list
+void display(Node* head) {
+    Node* temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+// Count and print the length of the list
+void lengthLL(Node* head) {
+    int count = 0;
+    Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    cout << "There are only " << count << " elements in the linked list." << endl;
+}
+
+// Reverse the linked list
+Node* reverseLL(Node* head) {
+    Node* previous = NULL;
+    Node* current = head;
+    Node* next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = previous;
+        previous = current;
+        current = next;
+    }
+    return previous;
+}
+
+// Sort the list using vector + selection sort
+Node* sort_LL(Node* head) {
+    vector<int> v;
+    Node* temp = head;
+
+    // Copy data to vector
+    while (temp != NULL) {
+        v.push_back(temp->data);
+        temp = temp->next;
+    }
+
+    // Selection sort on vector
+    for (int i = 0; i < v.size() - 1; i++) {
+        int min = i;
+        for (int j = i + 1; j < v.size(); j++) {
+            if (v[j] < v[min]) {
+                min = j;
+            }
+        }
+        if (min != i) {
+            swap(v[i], v[min]);
+        }
+    }
+
+    // Copy back to linked list
+    temp = head;
+    for (int i = 0; i < v.size(); i++) {
+        temp->data = v[i];
+        temp = temp->next;
+    }
+    return head;
+}
+
+// Sort the list using bubble sort (in-place)
+void sortLL(Node* head) {
+    for (Node* i = head; i != NULL; i = i->next) {
+        for (Node* j = i->next; j != NULL; j = j->next) {
+            if (i->data > j->data) {
+                swap(i->data, j->data);
+            }
+        }
+    }
+    display(head);
+}
+
+// Search for a value
+void searchLL(Node* head, int x) {
+    Node* temp = head;
+    bool found = false;
+    while (temp != NULL) {
+        if (temp->data == x) {
+            found = true;
+            break;
+        }
+        temp = temp->next;
+    }
+    cout << (found ? "Element Found." : "Element Not Found.") << endl;
+}
+
+// Update the value at a specific index
+void updateLL(Node* head, int index, int x) {
+    int pos = 0;
+    Node* temp = head;
+    while (temp != NULL) {
+        if (pos == index) {
+            temp->data = x;
+            cout << "Element found at index " << pos << endl;
+            cout << "Updated the element to " << x << endl;
+            return;
+        }
+        temp = temp->next;
+        pos++;
+    }
+    cout << "Index out of range." << endl;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        insert_first(x);
+    }
+
+    cout << "Initial List after insert_first: ";
+    display(head);
+
+    // Insert at end
+    insert_last(head, 40);
+    insert_last(head, 50);
+
+    cout << "List after insert_last: ";
+    display(head);
+
+    lengthLL(head);
+
+    cout << "Searching for value 20: ";
+    searchLL(head, 20);
+
+    cout << "Searching for value 1000: ";
+    searchLL(head, 1000);
+
+    updateLL(head, 2, 99);
+    cout << "List after update: ";
+    display(head);
+
+    // Sort using bubble sort
+    cout << "List after bubble sort: ";
+    sortLL(head);
+
+    // Reverse list
+    head = reverseLL(head);
+    cout << "List after reverse: ";
+    display(head);
+
+    // Sort again using vector selection sort
+    head = sort_LL(head);
+    cout << "List after vector selection sort: ";
+    display(head);
+
+    return 0;
+}
