@@ -1,5 +1,6 @@
 // Total time complexity = O(nlogn): sorting +  binary search
-
+//sort(v.begin(), v.end());                       // Step 1: Sort the container
+//binary_search(v.begin(), v.end(), x);           // Step 2: Use binary_search
 #include <bits/stdc++.h>
 using namespace std;
 
