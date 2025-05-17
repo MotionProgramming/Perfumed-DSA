@@ -1,3 +1,7 @@
+ //int result = upper_bound(v.begin(),v.end(),x)-v.begin();
+//int result  = lower_bound(v.begin(),v.end(),x)-v.begin();
+
+// time complexity = O(n log2 n)
 #include <bits/stdc++.h>
 using namespace std;
 vector<int>v;
