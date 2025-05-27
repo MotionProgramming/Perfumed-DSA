@@ -1,0 +1,121 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Node definition
+struct Node {
+    int data;
+    Node* next;
+};
+
+// Global head pointer
+Node* head = NULL;
+
+// Function to print the list
+void print() {
+    Node* temp = head;
+    cout << "The list is: ";
+    while (temp != NULL) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+// Insert at the beginning (like stack push)
+void insert_first(int x) {
+    Node* temp = new Node;
+    temp->data = x;
+    temp->next = head;
+    head = temp;
+}
+
+// Insert at the end (like queue enqueue)
+void insert_last(int x) {
+    Node* temp = new Node;
+    temp->data = x;
+    temp->next = NULL;
+
+    if (head == NULL) {
+        head = temp;
+    } else {
+        Node* temp_1 = head;
+        while (temp_1->next != NULL) {
+            temp_1 = temp_1->next;
+        }
+        temp_1->next = temp;
+    }
+}
+
+// Delete the first element (used for both pop and dequeue)
+void delete_first() {
+    if (head == NULL) {
+        cout << "List is empty\n";
+        return;
+    }
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+}
+
+
+void sort_ascending() {
+    if (head == NULL || head->next == NULL) return;
+
+    vector<int> values;
+    Node* temp = head;
+
+    
+    while (temp != NULL) {
+        values.push_back(temp->data);
+        temp = temp->next;
+    }
+
+    
+    sort(values.begin(), values.end());
+
+   
+    temp = head;
+    int i = 0;
+    while (temp != NULL) {
+        temp->data = values[i++];
+        temp = temp->next;
+    }
+}
+
+int main() {
+    string s;
+    int num;
+
+    while (cin >> s) {
+        if (s == "insert_first") {      // Stack push
+            cin >> num;
+            insert_first(num);
+            print();
+        }
+
+        if (s == "insert_last") {       // Queue enqueue
+            cin >> num;
+            insert_last(num);
+            print();
+        }
+
+        if (s == "pop") {               // Stack pop (delete first)
+            delete_first();
+            print();
+        }
+
+        if (s == "dequeue") {           // Queue dequeue (delete first)
+            delete_first();
+            print();
+        }
+
+        if (s == "asc") {               // Sort list in ascending order
+            sort_ascending();
+            print();
+        }
+    }
+
+    return 0;
+}
